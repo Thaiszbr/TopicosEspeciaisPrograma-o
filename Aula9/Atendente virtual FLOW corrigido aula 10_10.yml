@@ -1,0 +1,487 @@
+app:
+  description: Atendente Virtual flow
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: Atendente virtual FLOW corrigido aula 10/10
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables:
+  - description: Controle da etapa em que o usuário se encontra
+    id: 9565797d-a3aa-4001-9c8a-dfd9fcaf78b5
+    name: etapaAtual
+    value: 0
+    value_type: number
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: llm-source-1728006642170-target
+      source: llm
+      sourceHandle: source
+      target: '1728006642170'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: answer
+      id: 1728006642170-source-answer-target
+      source: '1728006642170'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: answer
+        targetType: if-else
+      id: answer-source-1728601523349-target
+      source: answer
+      sourceHandle: source
+      target: '1728601523349'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1728601523349-true-1728601663678-target
+      source: '1728601523349'
+      sourceHandle: 'true'
+      target: '1728601663678'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1728005687404-source-1728602199217-target
+      source: '1728005687404'
+      sourceHandle: source
+      target: '1728602199217'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1728602199217-false-llm-target
+      source: '1728602199217'
+      sourceHandle: 'false'
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1728602199217-true-1728602315545-target
+      source: '1728602199217'
+      sourceHandle: 'true'
+      target: '1728602315545'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: llm
+      id: 1728602315545-source-1728602547537-target
+      source: '1728602315545'
+      sourceHandle: source
+      target: '1728602547537'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1728602547537-source-1728602773922-target
+      source: '1728602547537'
+      sourceHandle: source
+      target: '1728602773922'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Iniciar
+        type: start
+        variables: []
+      height: 53
+      id: '1728005687404'
+      position:
+        x: -136.45997026748586
+        y: -31.776616689708916
+      positionAbsolute:
+        x: -136.45997026748586
+        y: -31.776616689708916
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 11
+        model:
+          completion_params:
+            json_schema: "{\n  \"name\": \"carro_escolha\",\n  \"schema\": {\n   \
+              \ \"type\": \"object\",\n    \"properties\": {\n      \"nome\": {\n\
+              \        \"type\": \"string\",\n        \"description\": \"o nome da\
+              \ pessoa\"\n      },\n      \"carro\": {\n        \"type\": \"string\"\
+              ,\n        \"description\": \"o carro que o usuário escolheu, se não\
+              \ souber marque \\\"\\\"\"\n      },\n      \"response\": {\n      \
+              \  \"type\": \"string\",\n        \"description\": \"Sua resposta para\
+              \ o usuário\"\n      },\n      \"etapa\": {\n        \"type\": \"integer\"\
+              ,\n        \"description\": \"o número da etapa em que você se encontra\
+              \ com descrito nas tags\"\n      }\n    }\n  }\n}"
+            response_format: json_schema
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: openai
+        prompt_template:
+        - id: 73143980-20f7-4bb9-98ce-bfbf3f5c3b0c
+          role: system
+          text: "<contexto>\nSeu nome é Clara, você trabalha na Concecionaria Auto\
+            \ Carros.\nNo inicio da conversa, envie sempre a logo da loja, no formato\
+            \ markdown:\n\n\n![\"Auto+ Carros\"](https://www.veiculoaqui.com.br/fotos_lojas/loja20231122131932721_535130177.jpeg)\n\
+            \n\n\nVocê deve orientar o usuário a encontrar o carro ideal.\n</contexto>\n\
+            \n\n<etapas>\n1. Solicite o nome do usuário\n2. Pergunte para que tipo\
+            \ de uso será o carro\n3. Faça poucas perguntas para identificar o carro\
+            \ ideal para o cliente\n4. Sugira um carro ou uma lista de carros com\
+            \ base no perfil dele\n5. Assim que o usuário escolher o carro, agradeça\
+            \ e diga que irá encaminhá-lo para o Gerente Caetano, que irá agendar\
+            \ um teste Drive.\n</etapas> \n\n\n<response_format>\nResponda no formato\
+            \ JSON com os seguintes campos:\nresponse - Sua resposta para o usuário\n\
+            carro - o carro que o usuário escolheu, se não souber marque \"\"\nnome\
+            \ - o nome do usuário, se não souber, marque \"\"\netapa - o número da\
+            \ etapa em que você se encontra com descrito nas tags <etapas>\n\n\n</response_format>\n\
+            \n\n"
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: true
+      height: 97
+      id: llm
+      position:
+        x: 641
+        y: 105
+      positionAbsolute:
+        x: 641
+        y: 105
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1728006642170.response#}}'
+        desc: ''
+        selected: false
+        title: Resposta
+        type: answer
+        variables: []
+      height: 105
+      id: answer
+      position:
+        x: 987.5640517359059
+        y: 253.4850068603211
+      positionAbsolute:
+        x: 987.5640517359059
+        y: 253.4850068603211
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "def main(data: str) -> dict:\n    jsondata = json.loads(data)\n\n \
+          \   return {\n        \"response\": jsondata[\"response\"],\n        \"\
+          etapa\": jsondata[\"etapa\"],\n        \"nome\": jsondata[\"nome\"],\n \
+          \       \"carro\": jsondata[\"carro\"],\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          carro:
+            children: null
+            type: string
+          etapa:
+            children: null
+            type: number
+          nome:
+            children: null
+            type: string
+          response:
+            children: null
+            type: string
+        selected: false
+        title: Código
+        type: code
+        variables:
+        - value_selector:
+          - llm
+          - text
+          variable: data
+      height: 53
+      id: '1728006642170'
+      position:
+        x: 944
+        y: 105
+      positionAbsolute:
+        x: 944
+        y: 105
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: 49303daa-b81d-43ae-b316-15967f94b675
+            value: '5'
+            varType: number
+            variable_selector:
+            - '1728006642170'
+            - etapa
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: SE/SENÃO
+        type: if-else
+      height: 125
+      id: '1728601523349'
+      position:
+        x: 1290.5640517359059
+        y: 253.4850068603211
+      positionAbsolute:
+        x: 1290.5640517359059
+        y: 253.4850068603211
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - etapaAtual
+        desc: ''
+        input_variable_selector:
+        - '1728006642170'
+        - etapa
+        selected: false
+        title: Atribuidor de Variáveis
+        type: assigner
+        write_mode: over-write
+      height: 131
+      id: '1728601663678'
+      position:
+        x: 1593.5640517359059
+        y: 253.4850068603211
+      positionAbsolute:
+        x: 1593.5640517359059
+        y: 253.4850068603211
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: 3a6e5677-f3b5-4415-9e32-cc556f714139
+            value: '5'
+            varType: number
+            variable_selector:
+            - conversation
+            - etapaAtual
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: SE/SENÃO 2
+        type: if-else
+      height: 125
+      id: '1728602199217'
+      position:
+        x: 92.56900233910017
+        y: 216.654380971191
+      positionAbsolute:
+        x: 92.56900233910017
+        y: 216.654380971191
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "rom datetime import datetime\n\ndef main() -> dict:\n    # Dicionário\
+          \ para mapear os dias da semana em português\n    days_of_week = {\n   \
+          \     0: \"Segunda-feira\",\n        1: \"Terça-feira\",\n        2: \"\
+          Quarta-feira\",\n        3: \"Quinta-feira\",\n        4: \"Sexta-feira\"\
+          ,\n        5: \"Sábado\",\n        6: \"Domingo\"\n    }\n    \n    # Obtém\
+          \ a data atual\n    current_date = datetime.now()\n    \n    # Formata a\
+          \ data no formato dd/mm/aaaa\n    formatted_date = current_date.strftime(\"\
+          %d/%m/%Y\")\n    \n    # Obtém o dia da semana em português\n    day_of_week\
+          \ = days_of_week[current_date.weekday()]\n    \n    # Retorna a data e o\
+          \ dia da semana\n    return {\n        \"data_atual\": formatted_date,\n\
+          \        \"dia_da_semana\": day_of_week\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          data_atual:
+            children: null
+            type: string
+          dia_da_semana:
+            children: null
+            type: string
+        selected: false
+        title: Pegar Data atual
+        type: code
+        variables: []
+      height: 53
+      id: '1728602315545'
+      position:
+        x: 375.0474010634302
+        y: -101.26357195487714
+      positionAbsolute:
+        x: 375.0474010634302
+        y: -101.26357195487714
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: openai
+        prompt_template:
+        - edition_type: jinja2
+          id: 4c9baa9b-3a36-42d3-8173-cae6b846f60a
+          jinja2_text: "<contexto>\r\nSeu nome é Caetano e você é responsável por\
+            \ agendar o teste drive com o cliente em nossa concessionária.\r\n</contexto>\r\
+            \n\r\n<etapas>\r\n1. Pergunte o endereço do usuário\r\n2. Sugira os próximos\
+            \ dois dias para agendamento, hoje é {{ data_atual }}, {{ dia_da_semana\
+            \ }}.\r\n3. Sugira dois horários, um de manhã e outro de tarde.\r\n4.\
+            \ Agradeça ao usuário e diga que irá aguardá-lo.\r\n\r\n</etapas>"
+          role: system
+          text: ''
+        selected: false
+        title: Text drive
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: true
+      height: 97
+      id: '1728602547537'
+      position:
+        x: 674.6963680020268
+        y: -149.6669699318121
+      positionAbsolute:
+        x: 674.6963680020268
+        y: -149.6669699318121
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1728602547537.text#}}'
+        desc: ''
+        selected: false
+        title: Reposta test drive
+        type: answer
+        variables: []
+      height: 105
+      id: '1728602773922'
+      position:
+        x: 1006.6588150986225
+        y: -197.66188226331352
+      positionAbsolute:
+        x: 1006.6588150986225
+        y: -197.66188226331352
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 241.58876286050582
+      y: 381.9308363154085
+      zoom: 0.6009723069749274
